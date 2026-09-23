@@ -1,0 +1,233 @@
+{%- comment -%}
+  Section: Ecom Banner
+  Built from scratch (no Dawn components). Three parts, top to bottom:
+    1. Top bar     – logo, short message, "Choose gift" button
+    2. Hero        – illustration background, heading, text, "Shop now" button
+    3. Bottom strip – one-line announcement
+  Every piece of copy is editable in the theme customizer.
+  Mobile gets its own shorter copy where the Figma design uses different text.
+{%- endcomment -%}
+
+{%- comment -%} Load order matters: base tokens/button first, then section styles. {%- endcomment -%}
+{% render 'ecom-fonts' %}
+{{ 'ecom-base.css' | asset_url | stylesheet_tag }}
+{{ 'ecom-banner.css' | asset_url | stylesheet_tag }}
+
+{%- if section.settings.hide_theme_header -%}
+  {%- comment -%} The Figma top bar replaces the store header on this page only. {%- endcomment -%}
+  <style>
+    .shopify-section-group-header-group { display: none; }
+  </style>
+{%- endif -%}
+
+<div class="ecom-banner">
+  {%- comment -%} 1. Top bar {%- endcomment -%}
+  {%- if section.settings.show_top_bar -%}
+    <div class="ecom-banner__topbar">
+      <a href="{{ routes.root_url }}" class="ecom-banner__logo">
+        {%- if section.settings.logo != blank -%}
+          {{
+            section.settings.logo
+            | image_url: width: 400
+            | image_tag: class: 'ecom-banner__logo-img', loading: 'eager', alt: shop.name
+          }}
+        {%- else -%}
+          <span class="ecom-banner__logo-text">{{ shop.name | escape }}</span>
+        {%- endif -%}
+      </a>
+
+      {%- if section.settings.top_text != blank -%}
+        <p class="ecom-banner__topbar-text">{{ section.settings.top_text | escape }}</p>
+      {%- endif -%}
+
+      <div class="ecom-banner__topbar-actions">
+        {%- if section.settings.top_button_label != blank -%}
+          <a
+            href="{{ section.settings.top_button_link | default: routes.all_products_collection_url }}"
+            class="ecom-btn ecom-btn--light ecom-banner__topbar-btn"
+          >
+            <span>{{ section.settings.top_button_label | escape }}</span>
+            {% render 'ecom-icon-arrow' %}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} 2. Hero {%- endcomment -%}
+  <div class="ecom-banner__hero">
+    <div class="ecom-banner__media" aria-hidden="true">
+      {%- if section.settings.image_desktop != blank -%}
+        {{
+          section.settings.image_desktop
+          | image_url: width: 2880
+          | image_tag:
+            class: 'ecom-banner__bg ecom-banner__bg--desktop',
+            loading: 'eager',
+            fetchpriority: 'high',
+            sizes: '100vw',
+            widths: '1440, 1920, 2880',
+            alt: ''
+        }}
+      {%- endif -%}
+      {%- if section.settings.image_mobile != blank -%}
+        {{
+          section.settings.image_mobile
+          | image_url: width: 1372
+          | image_tag: class: 'ecom-banner__bg ecom-banner__bg--mobile', loading: 'eager', alt: ''
+        }}
+      {%- endif -%}
+    </div>
+
+    <div class="ecom-banner__content">
+      {%- if section.settings.heading != blank -%}
+        <h1 class="ecom-banner__heading">{{ section.settings.heading | escape }}</h1>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <p class="ecom-banner__text ecom-banner__text--desktop">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+      {%- assign mobile_text = section.settings.text_mobile | default: section.settings.text -%}
+      {%- if mobile_text != blank -%}
+        <p class="ecom-banner__text ecom-banner__text--mobile">{{ mobile_text | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <a
+          href="{{ section.settings.button_link | default: routes.all_products_collection_url }}"
+          class="ecom-btn ecom-btn--dark ecom-banner__cta"
+        >
+          <span>{{ section.settings.button_label | escape }}</span>
+          {% render 'ecom-icon-arrow' %}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} 3. Bottom strip {%- endcomment -%}
+  {%- if section.settings.strip_text != blank -%}
+    {%- assign strip_mobile = section.settings.strip_text_mobile | default: section.settings.strip_text -%}
+    <div class="ecom-banner__strip">
+      <p class="ecom-banner__strip-text ecom-banner__strip-text--desktop">{{ section.settings.strip_text | escape }}</p>
+      <p class="ecom-banner__strip-text ecom-banner__strip-text--mobile">{{ strip_mobile | escape }}</p>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Ecom Banner",
+  "tag": "section",
+  "class": "ecom-banner-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Top bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_top_bar",
+      "label": "Show top bar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_theme_header",
+      "label": "Hide store header on this page",
+      "info": "The top bar replaces the store header, as in the design.",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "Shown 19px tall. Falls back to the store name."
+    },
+    {
+      "type": "text",
+      "id": "top_text",
+      "label": "Top bar text",
+      "default": "Find the ideal gift for your loved ones."
+    },
+    {
+      "type": "text",
+      "id": "top_button_label",
+      "label": "Top bar button label",
+      "default": "Choose gift"
+    },
+    {
+      "type": "url",
+      "id": "top_button_link",
+      "label": "Top bar button link"
+    },
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Background illustration (desktop)",
+      "info": "1440 × 780px"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Background illustration (mobile)",
+      "info": "686 × 264px"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Gift Guide"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season."
+    },
+    {
+      "type": "textarea",
+      "id": "text_mobile",
+      "label": "Text on mobile",
+      "info": "Leave empty to use the text above.",
+      "default": "Discover Joy: Your Ultimate Holiday Gift Destination."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Bottom strip"
+    },
+    {
+      "type": "text",
+      "id": "strip_text",
+      "label": "Text",
+      "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+    },
+    {
+      "type": "text",
+      "id": "strip_text_mobile",
+      "label": "Text on mobile",
+      "info": "Leave empty to use the text above.",
+      "default": "SUSTAINABLE, ETHICALLY MADE ACTIVEWEAR"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ecom Banner"
+    }
+  ]
+}
+{% endschema %}

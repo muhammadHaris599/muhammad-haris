@@ -1,0 +1,68 @@
+{
+  "sections": {
+    "banner": {
+      "type": "ecom-banner",
+      "settings": {}
+    },
+    "grid": {
+      "type": "ecom-product-grid",
+      "blocks": {
+        "product-1": {
+          "type": "product",
+          "settings": {
+            "hotspot_x": 59,
+            "hotspot_y": 54
+          }
+        },
+        "product-2": {
+          "type": "product",
+          "settings": {
+            "hotspot_x": 82,
+            "hotspot_y": 50
+          }
+        },
+        "product-3": {
+          "type": "product",
+          "settings": {
+            "hotspot_x": 60,
+            "hotspot_y": 18
+          }
+        },
+        "product-4": {
+          "type": "product",
+          "settings": {
+            "hotspot_x": 70,
+            "hotspot_y": 16
+          }
+        },
+        "product-5": {
+          "type": "product",
+          "settings": {
+            "hotspot_x": 49,
+            "hotspot_y": 23
+          }
+        },
+        "product-6": {
+          "type": "product",
+          "settings": {
+            "hotspot_x": 74,
+            "hotspot_y": 37
+          }
+        }
+      },
+      "block_order": [
+        "product-1",
+        "product-2",
+        "product-3",
+        "product-4",
+        "product-5",
+        "product-6"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "banner",
+    "grid"
+  ]
+}

@@ -1,0 +1,105 @@
+/* ==========================================================================
+   Ecom base: design tokens + shared button
+   Loaded by both Ecom sections (Banner and Product Grid).
+   ========================================================================== */
+
+:root {
+  --ecom-font-body: 'Jost', 'Helvetica Neue', Arial, sans-serif;
+  --ecom-font-serif: 'Lustria', Georgia, 'Times New Roman', serif;
+  --ecom-black: #000;
+  --ecom-white: #fff;
+  --ecom-yellow: #fff544;
+  --ecom-grey: #f5f5f5;
+  --ecom-ease: cubic-bezier(0.65, 0, 0.35, 1);
+  --ecom-duration: 0.4s;
+}
+
+/* --------------------------------------------------------------------------
+   Shared button (used by the banner and the popup)
+   Hover animation: a colour panel sweeps in from the left, the text colour
+   flips, and the arrow nudges 10px to the right.
+   -------------------------------------------------------------------------- */
+.ecom-btn {
+  --btn-bg: var(--ecom-black);
+  --btn-color: var(--ecom-white);
+  --btn-hover-bg: var(--ecom-yellow);
+  --btn-hover-color: var(--ecom-black);
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 0;
+  border-radius: 0;
+  background: var(--btn-bg);
+  color: var(--btn-color);
+  font-family: var(--ecom-font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20.48px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--ecom-duration) var(--ecom-ease),
+    box-shadow var(--ecom-duration) var(--ecom-ease);
+}
+
+/* The sweeping panel */
+.ecom-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--btn-hover-bg);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--ecom-duration) var(--ecom-ease);
+}
+
+.ecom-btn__arrow {
+  flex-shrink: 0;
+  transition: transform var(--ecom-duration) var(--ecom-ease);
+}
+
+.ecom-btn:hover,
+.ecom-btn:focus-visible {
+  color: var(--btn-hover-color);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.ecom-btn:hover::before,
+.ecom-btn:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.ecom-btn:hover .ecom-btn__arrow,
+.ecom-btn:focus-visible .ecom-btn__arrow {
+  transform: translateX(10px);
+}
+
+.ecom-btn:focus-visible {
+  outline: 2px solid var(--ecom-black);
+  outline-offset: 3px;
+}
+
+/* Colour variants */
+.ecom-btn--light {
+  --btn-bg: var(--ecom-yellow);
+  --btn-color: var(--ecom-black);
+  --btn-hover-bg: var(--ecom-black);
+  --btn-hover-color: var(--ecom-white);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ecom-btn,
+  .ecom-btn::before,
+  .ecom-btn__arrow {
+    transition: none;
+  }
+}

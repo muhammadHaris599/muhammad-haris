@@ -1,0 +1,280 @@
+/* ==========================================================================
+   Ecom Banner
+   Values are taken from the Figma file (desktop frame 1440px, mobile 375px).
+   Breakpoint 750px matches the rest of the Dawn theme.
+   Tokens and the shared .ecom-btn live in ecom-base.css.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Wrapper – reset Dawn's inherited typography
+   -------------------------------------------------------------------------- */
+.ecom-banner {
+  font-family: var(--ecom-font-body);
+  color: var(--ecom-black);
+  letter-spacing: 0;
+}
+
+/* --------------------------------------------------------------------------
+   1. Top bar
+   -------------------------------------------------------------------------- */
+.ecom-banner__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 64px;
+  padding: 10px 50px;
+  background: var(--ecom-grey);
+}
+
+.ecom-banner__logo {
+  display: inline-flex;
+  align-items: center;
+  flex: 1 1 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.ecom-banner__logo-img {
+  display: block;
+  width: auto;
+  height: 19px;
+}
+
+.ecom-banner__logo-text {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ecom-banner__topbar-text {
+  flex: 0 1 auto;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1;
+  text-align: center;
+}
+
+/* Right column is as flexible as the logo column so the message stays centred */
+.ecom-banner__topbar-actions {
+  display: flex;
+  flex: 1 1 0;
+  justify-content: flex-end;
+}
+
+.ecom-banner__topbar-btn {
+  min-width: 207px;
+  height: 44px;
+  padding: 0 22px 0 33px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Hero
+   -------------------------------------------------------------------------- */
+.ecom-banner__hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 780px;
+  background: var(--ecom-white);
+}
+
+.ecom-banner__media {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ecom-banner__bg {
+  display: block;
+}
+
+.ecom-banner__bg--desktop {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.ecom-banner__bg--mobile {
+  display: none;
+}
+
+/* Content is anchored to the bottom-left: 67px from the left, 51px from the bottom */
+.ecom-banner__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  min-height: 780px;
+  padding: 0 24px 51px 67px;
+}
+
+.ecom-banner__heading {
+  margin: 0;
+  font-family: var(--ecom-font-body);
+  font-size: 70px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ecom-black);
+}
+
+.ecom-banner__text {
+  max-width: 483px;
+  margin: 50px 0 0;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.ecom-banner__text--mobile {
+  display: none;
+}
+
+.ecom-banner__cta {
+  min-width: 220px;
+  height: 50px;
+  margin-top: 50px;
+  padding: 0 25px 0 55px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Bottom strip
+   -------------------------------------------------------------------------- */
+.ecom-banner__strip {
+  padding: 10px 50px;
+  background: var(--ecom-grey);
+  text-align: center;
+}
+
+.ecom-banner__strip-text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 14px;
+  text-transform: uppercase;
+}
+
+.ecom-banner__strip-text--mobile {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Tablet – keep the desktop layout but let the heading breathe
+   -------------------------------------------------------------------------- */
+@media screen and (min-width: 750px) and (max-width: 1099px) {
+  .ecom-banner__topbar {
+    padding-inline: 24px;
+  }
+
+  .ecom-banner__topbar-text {
+    font-size: 14px;
+  }
+
+  .ecom-banner__heading {
+    font-size: 56px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile (375px design)
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 749px) {
+  /* Top bar: logo only, centred */
+  .ecom-banner__topbar {
+    justify-content: center;
+    min-height: 65px;
+    padding: 23px 16px;
+    background: #f7f7f7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  }
+
+  .ecom-banner__logo {
+    flex: 0 0 auto;
+  }
+
+  .ecom-banner__topbar-text,
+  .ecom-banner__topbar-actions {
+    display: none;
+  }
+
+  /* Hero: 421px tall, centred copy on top, illustration in the lower part */
+  .ecom-banner__hero,
+  .ecom-banner__content {
+    min-height: 421px;
+  }
+
+  .ecom-banner__bg--desktop {
+    display: none;
+  }
+
+  .ecom-banner__bg--mobile {
+    display: block;
+    position: absolute;
+    top: 157px;
+    left: calc(50% + 15.5px);
+    width: 686px;
+    max-width: none;
+    height: 264px;
+    transform: translateX(-50%);
+  }
+
+  .ecom-banner__content {
+    align-items: center;
+    justify-content: flex-start;
+    padding: 49px 16px 0;
+    text-align: center;
+  }
+
+  .ecom-banner__heading {
+    font-size: 30px;
+  }
+
+  .ecom-banner__text--desktop {
+    display: none;
+  }
+
+  .ecom-banner__text--mobile {
+    display: block;
+    max-width: 340px;
+    margin-top: 24px;
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  /* Button sits over the illustration, 337px from the top of the hero */
+  .ecom-banner__cta {
+    position: absolute;
+    top: 337px;
+    left: 50%;
+    min-width: 193px;
+    height: 45px;
+    margin: 0;
+    padding: 13px 20px;
+    transform: translateX(-50%);
+    --btn-color: #f5f5f5;
+  }
+
+  /* Label is centred in a 119px box, arrow follows 10px later */
+  .ecom-banner__cta > span {
+    flex: 1 1 auto;
+    min-width: 119px;
+    text-align: center;
+  }
+
+  .ecom-banner__strip {
+    padding: 10px 16px;
+  }
+
+  .ecom-banner__strip-text {
+    font-size: 14px;
+  }
+
+  .ecom-banner__strip-text--desktop {
+    display: none;
+  }
+
+  .ecom-banner__strip-text--mobile {
+    display: block;
+  }
+}
