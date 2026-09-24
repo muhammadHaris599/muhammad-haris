@@ -85,6 +85,18 @@
                 "available": {{ product.available | json }},
                 "image": {% if product.featured_image %}{{ product.featured_image | image_url: width: 240 | json }}{% else %}null{% endif %},
                 "options": {{ product.options | json }},
+                "swatches": {
+                  {%- assign first_swatch = true -%}
+                  {%- for option in product.options_with_values -%}
+                    {%- for value in option.values -%}
+                      {%- if value.swatch.color -%}
+                        {%- unless first_swatch -%},{%- endunless -%}
+                        {%- assign first_swatch = false -%}
+                        {{ value.name | json }}: {{ value.swatch.color | append: '' | json }}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- endfor -%}
+                },
                 "variants": [
                   {%- for variant in product.variants -%}
                     {
@@ -139,7 +151,7 @@
 
       <button type="button" class="ecom-btn ecom-popup__atc" data-add-to-cart>
         <span data-atc-label>Add to cart</span>
-        {% render 'ecom-icon-arrow' %}
+        {% render 'ecom-icon-arrow', width: 34 %}
       </button>
     </div>
   </div>

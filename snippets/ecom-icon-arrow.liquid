@@ -1,8 +1,27 @@
 {%- comment -%}
   Snippet: ecom-icon-arrow
   Thin right arrow used inside every Ecom button. Inherits the button's text colour.
-  Usage: {% render 'ecom-icon-arrow' %}
+
+  Accepts:
+    - width {Number} arrow length in px (optional, default 25)
+
+  Usage:
+    {% render 'ecom-icon-arrow' %}
+    {% render 'ecom-icon-arrow', width: 34 %}
 {%- endcomment -%}
-<svg class="ecom-btn__arrow" width="25" height="12" viewBox="0 0 25 12" fill="none" aria-hidden="true" focusable="false">
-  <path d="M0 6h24M18.5 0.5 24 6l-5.5 5.5" stroke="currentColor" stroke-width="1"/>
+{%- liquid
+  assign arrow_width = width | default: 25
+  assign line_end = arrow_width | minus: 1
+  assign head_start = arrow_width | minus: 6.5
+-%}
+<svg
+  class="ecom-btn__arrow"
+  width="{{ arrow_width }}"
+  height="12"
+  viewBox="0 0 {{ arrow_width }} 12"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d="M0 6h{{ line_end }}M{{ head_start }} .5 {{ line_end }} 6l-5.5 5.5" stroke="currentColor" stroke-width="1"/>
 </svg>

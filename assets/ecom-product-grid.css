@@ -79,7 +79,6 @@
   display: block;
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 }
 
 .ecom-grid__hotspot:hover {
@@ -144,7 +143,7 @@ html.ecom-popup-open {
 
 .ecom-popup__close {
   position: absolute;
-  top: 21px;
+  top: 13px; /* × centred at x 287, y 21 as in Figma */
   right: 16px;
   display: grid;
   place-items: center;
@@ -379,14 +378,13 @@ html.ecom-popup-open {
   width: 100%;
   height: 45px;
   margin-top: 51px;
-  padding: 0 70px;
+  padding: 0 88px 0 70px; /* label centre sits 9px left of the button centre */
 }
 
-/* Arrow is pinned 31px from the right edge, label stays centred */
+/* 34px arrow pinned 31px from the right edge */
 .ecom-popup__atc .ecom-btn__arrow {
   position: absolute;
   right: 31px;
-  width: 34px;
 }
 
 .ecom-popup__atc[disabled] {
