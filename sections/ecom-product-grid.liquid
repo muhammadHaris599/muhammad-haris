@@ -73,7 +73,31 @@
                 <path d="M11 6.5v9M6.5 11h9" stroke="#000" stroke-width="1.2"/>
               </svg>
             </button>
-            <script type="application/json" data-product-json>{{ product | json }}</script>
+            {%- comment -%}
+              Only the fields the popup needs, in a fixed shape.
+              Smaller than `product | json` and not affected by changes to that format.
+            {%- endcomment -%}
+            <script type="application/json" data-product-json>
+              {
+                "title": {{ product.title | json }},
+                "description": {{ product.description | json }},
+                "price": {{ product.price | json }},
+                "available": {{ product.available | json }},
+                "image": {% if product.featured_image %}{{ product.featured_image | image_url: width: 240 | json }}{% else %}null{% endif %},
+                "options": {{ product.options | json }},
+                "variants": [
+                  {%- for variant in product.variants -%}
+                    {
+                      "id": {{ variant.id | json }},
+                      "price": {{ variant.price | json }},
+                      "available": {{ variant.available | json }},
+                      "options": {{ variant.options | json }},
+                      "image": {% if variant.featured_image %}{{ variant.featured_image | image_url: width: 240 | json }}{% else %}null{% endif %}
+                    }{%- unless forloop.last -%},{%- endunless -%}
+                  {%- endfor -%}
+                ]
+              }
+            </script>
           {%- endif -%}
         </li>
       {%- endfor -%}

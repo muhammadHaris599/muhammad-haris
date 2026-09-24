@@ -55,14 +55,6 @@
     return new DOMParser().parseFromString(html || '', 'text/html').body.textContent.trim();
   }
 
-  /** Returns a Shopify CDN image URL resized to the given width. */
-  function sizedImageUrl(src, width) {
-    if (!src) return '';
-    const url = new URL(src, window.location.origin); // handles protocol-relative "//cdn…"
-    url.searchParams.set('width', width);
-    return url.toString();
-  }
-
   /**
    * Formats a price in cents with the shop's money format,
    * e.g. "{{amount_with_comma_separator}}€" → "980,00€".
@@ -217,14 +209,14 @@
       this.els.title.textContent = title;
       this.els.description.textContent = stripHtml(description);
       this.els.image.alt = title;
-      this.setImage(this.product.featured_image);
+      this.setImage(this.product.image);
     }
 
     setImage(src) {
       const { image } = this.els;
       image.hidden = !src;
       if (src) {
-        image.src = sizedImageUrl(src, 240); // 2× the 120px display width
+        image.src = src; // already sized to 240px (2× display width) in Liquid
       } else {
         image.removeAttribute('src');
       }
@@ -375,7 +367,7 @@
       const price = variant ? variant.price : this.product.price;
       this.els.price.textContent = formatMoney(price, this.moneyFormat);
 
-      if (variant && variant.featured_image) this.setImage(variant.featured_image.src);
+      if (variant && variant.image) this.setImage(variant.image);
 
       const soldOut = variant ? !variant.available : !this.product.available;
       this.els.atc.disabled = soldOut;
