@@ -16,7 +16,7 @@
         "hide_theme_header": false,
         "top_text": "Find the ideal gift for your loved ones.",
         "top_button_label": "Choose gift",
-        "top_button_link": "",
+        "top_button_link": "#",
         "image_top": "shopify://shop_images/Frame_2.png",
         "image_bottom": "shopify://shop_images/Frame_1.png",
         "image_mobile": "shopify://shop_images/Frame.png",
@@ -91,7 +91,7 @@
       ],
       "settings": {
         "heading": "Tisso vison in the wild",
-        "bonus_product": "",
+        "bonus_product": "dark-winter-jacket",
         "trigger_values": "Black, Medium"
       }
     }
