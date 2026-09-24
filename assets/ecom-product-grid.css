@@ -112,10 +112,17 @@ html.ecom-popup-open {
   display: none;
 }
 
-.ecom-popup__overlay {
+/*
+  The overlay is an empty <div>. Dawn's base.css hides every empty div
+  (div:empty { display: none }), so it is forced back on here.
+  :empty keeps the specificity higher than Dawn's rule without !important.
+*/
+.ecom-popup__overlay,
+.ecom-popup__overlay:empty {
+  display: block;
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.25); /* light dim, matches the Figma prototype overlay */
+  background: rgba(0, 0, 0, 0.2); /* light dim, matches the Figma prototype overlay */
   animation: ecom-fade-in 0.25s ease;
 }
 
