@@ -13,7 +13,7 @@
       "type": "ecom-banner",
       "settings": {
         "show_top_bar": true,
-        "hide_theme_header": false,
+        "hide_theme_header": true,
         "logo": "shopify://shop_images/Group_1000007777.png",
         "top_text": "Find the ideal gift for your loved ones.",
         "top_button_label": "Choose gift",
