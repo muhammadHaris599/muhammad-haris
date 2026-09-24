@@ -115,7 +115,7 @@ html.ecom-popup-open {
 .ecom-popup__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.2); /* light dim, matches the Figma prototype overlay */
+  background: rgba(0, 0, 0, 0.25); /* light dim, matches the Figma prototype overlay */
   animation: ecom-fade-in 0.25s ease;
 }
 
