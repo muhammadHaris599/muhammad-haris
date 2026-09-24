@@ -1,0 +1,470 @@
+/* ==========================================================================
+   Ecom Product Grid + quick-view popup
+   Values are taken from the Figma file (desktop frame 1440px, mobile 375px).
+   Tokens and the shared .ecom-btn live in ecom-base.css.
+   ========================================================================== */
+
+.ecom-grid {
+  display: block;
+  padding: 90px 0 51px;
+  font-family: var(--ecom-font-body);
+  color: #000;
+  letter-spacing: 0;
+}
+
+.ecom-grid__container {
+  max-width: 1379px; /* 1339px grid + 20px side padding */
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.ecom-grid__heading {
+  margin: 0 0 30px;
+  font-family: var(--ecom-font-serif);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: #000;
+}
+
+.ecom-grid__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* --------------------------------------------------------------------------
+   Tile
+   -------------------------------------------------------------------------- */
+.ecom-grid__item {
+  position: relative;
+  aspect-ratio: 433 / 444;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.ecom-grid__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ecom-grid__image--placeholder {
+  fill: #c8c8c8;
+}
+
+/* Hotspot: 22px white circle, position set per block via CSS variables */
+.ecom-grid__hotspot {
+  position: absolute;
+  top: var(--hotspot-y, 50%);
+  left: var(--hotspot-x, 50%);
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.ecom-grid__hotspot svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ecom-grid__hotspot:hover {
+  transform: scale(1.15);
+}
+
+.ecom-grid__hotspot:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Popup
+   -------------------------------------------------------------------------- */
+/* Scroll lock while the popup is open; padding replaces the hidden scrollbar
+   so the page behind does not shift sideways (width set in JS). */
+html.ecom-popup-open {
+  overflow: hidden;
+  padding-right: var(--ecom-scrollbar-width, 0px);
+}
+
+.ecom-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.ecom-popup[hidden] {
+  display: none;
+}
+
+/*
+  The overlay is an empty <div>. Dawn's base.css hides every empty div
+  (div:empty { display: none }), so it is forced back on here.
+  :empty keeps the specificity higher than Dawn's rule without !important.
+*/
+.ecom-popup__overlay,
+.ecom-popup__overlay:empty {
+  display: block;
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2); /* light dim, matches the Figma prototype overlay */
+  animation: ecom-fade-in 0.25s ease;
+}
+
+.ecom-popup__dialog {
+  position: relative;
+  width: 311px;
+  max-width: 100%;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  padding: 36px 20px 25px;
+  background: #fff;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+  animation: ecom-pop-in 0.25s ease;
+}
+
+.ecom-popup__dialog:focus {
+  outline: none;
+}
+
+.ecom-popup__close {
+  position: absolute;
+  top: 13px; /* × centred at x 287, y 21 as in Figma */
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #000;
+  cursor: pointer;
+}
+
+/* Image 120×140 at x=17, info column at x=145 */
+.ecom-popup__header {
+  display: flex;
+  gap: 8px;
+  margin-left: -3px;
+}
+
+.ecom-popup__media {
+  flex: 0 0 120px;
+  height: 140px;
+  background: #f5f5f5;
+}
+
+.ecom-popup__image {
+  display: block;
+  width: 120px;
+  height: 140px;
+  object-fit: cover;
+}
+
+.ecom-popup__info {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-top: 13px;
+}
+
+.ecom-popup__title {
+  margin: 0;
+  font-family: var(--ecom-font-body);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: #000;
+}
+
+.ecom-popup__price {
+  margin: 20px 0 0;
+  font-family: var(--ecom-font-serif);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.ecom-popup__description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  margin: 12px 0 0;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+/* --------------------------------------------------------------------------
+   Options
+   -------------------------------------------------------------------------- */
+.ecom-popup__options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.ecom-option__label {
+  margin: 0 0 6px;
+  font-size: 14px;
+  line-height: 1.3;
+  color: #333;
+}
+
+/* Colour: bordered row, one button per value with a 6px swatch strip */
+.ecom-swatches {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  height: 40px;
+  border: 0.5px solid #000;
+}
+
+.ecom-swatches__item {
+  position: relative;
+  padding: 0 8px 0 15px;
+  border: 0;
+  background: #fff;
+  color: #000;
+  font-family: inherit;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-align: left;
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.ecom-swatches__item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 6px;
+  border: 0.5px solid #000;
+  background: var(--swatch, #ccc);
+}
+
+.ecom-swatches__item.is-selected {
+  background: #000;
+  color: #fff;
+}
+
+.ecom-swatches__item:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: -4px;
+}
+
+/* Other options (size, …): custom dropdown */
+.ecom-dropdown {
+  position: relative;
+}
+
+.ecom-dropdown__toggle {
+  display: grid;
+  grid-template-columns: 1fr 55px;
+  align-items: stretch;
+  width: 100%;
+  height: 40px;
+  padding: 0;
+  border: 0.5px solid #000;
+  background: #fff;
+  color: #000;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ecom-dropdown__value {
+  align-self: center;
+  padding-left: 13px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ecom-dropdown__icon {
+  display: grid;
+  place-items: center;
+  border-left: 0.5px solid #000;
+}
+
+.ecom-dropdown__icon svg {
+  transition: transform 0.2s ease;
+}
+
+.ecom-dropdown.is-open .ecom-dropdown__icon svg {
+  transform: rotate(180deg);
+}
+
+.ecom-dropdown__list {
+  position: absolute;
+  top: calc(100% - 0.5px);
+  left: 0;
+  right: 0;
+  z-index: 2;
+  max-height: 180px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  border: 0.5px solid #000;
+  background: #fff;
+  list-style: none;
+}
+
+.ecom-dropdown__option {
+  display: block;
+  width: 100%;
+  height: 36px;
+  padding: 0 13px;
+  border: 0;
+  background: #fff;
+  color: #000;
+  font-family: inherit;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  cursor: pointer;
+}
+
+.ecom-dropdown__option:hover,
+.ecom-dropdown__option:focus-visible {
+  background: #f5f5f5;
+  outline: none;
+}
+
+.ecom-dropdown__option.is-selected {
+  background: #000;
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   Error + Add to cart
+   -------------------------------------------------------------------------- */
+.ecom-popup__error {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.3;
+  color: #c8102e;
+}
+
+.ecom-popup__atc {
+  justify-content: center;
+  width: 100%;
+  height: 45px;
+  margin-top: 51px;
+  padding: 0 88px 0 70px; /* label centre sits 9px left of the button centre */
+}
+
+/* 34px arrow pinned 31px from the right edge */
+.ecom-popup__atc .ecom-btn__arrow {
+  position: absolute;
+  right: 31px;
+}
+
+.ecom-popup__atc[disabled] {
+  color: var(--btn-color);
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.ecom-popup__atc[disabled]::before {
+  transform: scaleX(0);
+}
+
+.ecom-popup__atc.is-loading {
+  cursor: progress;
+}
+
+@keyframes ecom-fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes ecom-pop-in {
+  from { opacity: 0; transform: translateY(12px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ecom-popup__overlay,
+  .ecom-popup__dialog {
+    animation: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Tablet
+   -------------------------------------------------------------------------- */
+@media screen and (min-width: 750px) and (max-width: 1099px) {
+  .ecom-grid {
+    padding-top: 60px;
+  }
+
+  .ecom-grid__heading {
+    font-size: 30px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile (375px design): 2 columns, 4px gap, centred heading
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 749px) {
+  .ecom-grid {
+    padding: 40px 0 24px;
+  }
+
+  .ecom-grid__container {
+    padding: 0 16px;
+  }
+
+  .ecom-grid__heading {
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .ecom-grid__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .ecom-grid__item {
+    aspect-ratio: 169 / 186.42;
+  }
+
+  /* On mobile every hotspot sits at the same spot, as in the design */
+  .ecom-grid__hotspot {
+    top: 18px;
+    left: 60%;
+    width: 15.7px;
+    height: 15.7px;
+  }
+}
