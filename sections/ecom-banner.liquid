@@ -14,9 +14,20 @@
 {{ 'ecom-banner.css' | asset_url | stylesheet_tag }}
 
 {%- if section.settings.hide_theme_header -%}
-  {%- comment -%} The Figma top bar replaces the store header on this page only. {%- endcomment -%}
+  {%- comment -%}
+    The Figma top bar replaces the store header on this page only.
+    Several selectors cover the different Dawn versions (header group wrapper,
+    header section, sticky header element, announcement bar).
+    !important is needed to beat Dawn's own header display rules.
+  {%- endcomment -%}
   <style>
-    .shopify-section-group-header-group { display: none; }
+    .shopify-section-group-header-group,
+    .section-header,
+    .announcement-bar-section,
+    sticky-header,
+    .header-wrapper {
+      display: none !important;
+    }
   </style>
 {%- endif -%}
 
