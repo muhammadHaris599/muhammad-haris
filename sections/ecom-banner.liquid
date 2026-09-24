@@ -21,37 +21,64 @@
 {%- endif -%}
 
 <div class="ecom-banner">
-  {%- comment -%} 1. Top bar {%- endcomment -%}
+  {%- comment -%}
+    1. Top bar
+    Desktop: logo | message | button in one row.
+    Mobile:  hamburger + centred logo; the message and button move into a
+             panel that the hamburger opens (see ecom-banner.js).
+  {%- endcomment -%}
   {%- if section.settings.show_top_bar -%}
-    <div class="ecom-banner__topbar">
-      <a href="{{ routes.root_url }}" class="ecom-banner__logo">
-        {%- if section.settings.logo != blank -%}
-          {{
-            section.settings.logo
-            | image_url: width: 400
-            | image_tag: class: 'ecom-banner__logo-img', loading: 'eager', alt: shop.name
-          }}
-        {%- else -%}
-          <span class="ecom-banner__logo-text">{{ shop.name | escape }}</span>
-        {%- endif -%}
-      </a>
+    {%- assign panel_id = 'EcomTopbarPanel-' | append: section.id -%}
+    <ecom-topbar class="ecom-banner__topbar">
+      <div class="ecom-banner__bar">
+        <button
+          type="button"
+          class="ecom-banner__menu-toggle"
+          aria-expanded="false"
+          aria-controls="{{ panel_id }}"
+          aria-label="Open menu"
+          data-menu-toggle
+        >
+          <svg class="ecom-banner__icon-open" width="18" height="10" viewBox="0 0 18 10" aria-hidden="true" focusable="false">
+            <path d="M0 .75h18M0 5h18M0 9.25h18" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          <svg class="ecom-banner__icon-close" width="13" height="13" viewBox="0 0 13 13" aria-hidden="true" focusable="false">
+            <path d="M.5.5l12 12M12.5.5l-12 12" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
 
-      {%- if section.settings.top_text != blank -%}
-        <p class="ecom-banner__topbar-text">{{ section.settings.top_text | escape }}</p>
-      {%- endif -%}
-
-      <div class="ecom-banner__topbar-actions">
-        {%- if section.settings.top_button_label != blank -%}
-          <a
-            href="{{ section.settings.top_button_link | default: routes.all_products_collection_url }}"
-            class="ecom-btn ecom-btn--light ecom-banner__topbar-btn"
-          >
-            <span>{{ section.settings.top_button_label | escape }}</span>
-            {% render 'ecom-icon-arrow' %}
-          </a>
-        {%- endif -%}
+        <a href="{{ routes.root_url }}" class="ecom-banner__logo">
+          {%- if section.settings.logo != blank -%}
+            {{
+              section.settings.logo
+              | image_url: width: 400
+              | image_tag: class: 'ecom-banner__logo-img', loading: 'eager', alt: shop.name
+            }}
+          {%- else -%}
+            <span class="ecom-banner__logo-text">{{ shop.name | escape }}</span>
+          {%- endif -%}
+        </a>
       </div>
-    </div>
+
+      <div class="ecom-banner__panel" id="{{ panel_id }}" data-menu-panel>
+        {%- if section.settings.top_text != blank -%}
+          <p class="ecom-banner__topbar-text">{{ section.settings.top_text | escape }}</p>
+        {%- endif -%}
+
+        <div class="ecom-banner__topbar-actions">
+          {%- if section.settings.top_button_label != blank -%}
+            <a
+              href="{{ section.settings.top_button_link | default: routes.all_products_collection_url }}"
+              class="ecom-btn ecom-btn--light ecom-banner__topbar-btn"
+            >
+              <span>{{ section.settings.top_button_label | escape }}</span>
+              {% render 'ecom-icon-arrow' %}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </ecom-topbar>
+    <script src="{{ 'ecom-banner.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 
   {%- comment -%} 2. Hero {%- endcomment -%}

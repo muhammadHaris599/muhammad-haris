@@ -17,6 +17,16 @@
 /* --------------------------------------------------------------------------
    1. Top bar
    -------------------------------------------------------------------------- */
+/* Desktop: the bar and panel wrappers dissolve so all items share one flex row */
+.ecom-banner__bar,
+.ecom-banner__panel {
+  display: contents;
+}
+
+.ecom-banner__menu-toggle {
+  display: none;
+}
+
 .ecom-banner__topbar {
   display: flex;
   align-items: center;
@@ -180,8 +190,20 @@
    Mobile (375px design)
    -------------------------------------------------------------------------- */
 @media screen and (max-width: 749px) {
-  /* Top bar: logo only, centred */
+  /* Top bar: 65px bar with hamburger + centred logo */
   .ecom-banner__topbar {
+    display: block;
+    position: relative;
+    z-index: 2; /* keep the bar's shadow above the hero */
+    min-height: 0;
+    padding: 0;
+    background: none;
+  }
+
+  .ecom-banner__bar {
+    position: relative;
+    display: flex;
+    align-items: center;
     justify-content: center;
     min-height: 65px;
     padding: 23px 16px;
@@ -189,13 +211,62 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   }
 
+  .ecom-banner__menu-toggle {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #000;
+    cursor: pointer;
+    transform: translate(-3px, -50%);
+  }
+
+  .ecom-banner__icon-close,
+  .ecom-banner__topbar.is-open .ecom-banner__icon-open {
+    display: none;
+  }
+
+  .ecom-banner__topbar.is-open .ecom-banner__icon-close {
+    display: block;
+  }
+
   .ecom-banner__logo {
     flex: 0 0 auto;
   }
 
-  .ecom-banner__topbar-text,
-  .ecom-banner__topbar-actions {
+  /* Panel: closed by default, opened by the hamburger */
+  .ecom-banner__panel {
     display: none;
+  }
+
+  .ecom-banner__topbar.is-open .ecom-banner__panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 25px 16px;
+    background: #f2f2f2;
+  }
+
+  .ecom-banner__topbar-text {
+    font-size: 16px;
+    line-height: 13.424px;
+  }
+
+  .ecom-banner__topbar-actions {
+    flex: 0 0 auto;
+    justify-content: center;
+  }
+
+  .ecom-banner__topbar-btn {
+    min-width: 244px;
+    padding: 0 26px 0 39px;
   }
 
   /* Hero: 421px tall, centred copy on top, illustration in the lower part */
