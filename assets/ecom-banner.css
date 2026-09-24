@@ -99,11 +99,28 @@
   display: block;
 }
 
-.ecom-banner__bg--desktop {
-  width: 100%;
-  height: 100%;
+/* Desktop: two illustration frames, placed as in Figma (1440 × 780 hero) */
+.ecom-banner__bg--top,
+.ecom-banner__bg--bottom {
+  position: absolute;
   object-fit: cover;
+}
+
+.ecom-banner__bg--top {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 390px;
   object-position: center top;
+}
+
+/* 890px of 1440px wide, anchored to the bottom-right corner */
+.ecom-banner__bg--bottom {
+  right: 0;
+  bottom: 0;
+  width: 61.81%;
+  height: 402px;
+  object-position: left top;
 }
 
 .ecom-banner__bg--mobile {
@@ -275,7 +292,8 @@
     min-height: 421px;
   }
 
-  .ecom-banner__bg--desktop {
+  .ecom-banner__bg--top,
+  .ecom-banner__bg--bottom {
     display: none;
   }
 
@@ -323,7 +341,7 @@
   }
 
   .ecom-banner__cta {
-    position: absolute !important;
+    position: relative;
     z-index: 1;
     align-self: center;
     min-width: 193px;

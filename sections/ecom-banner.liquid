@@ -83,17 +83,35 @@
 
   {%- comment -%} 2. Hero {%- endcomment -%}
   <div class="ecom-banner__hero">
+    {%- comment -%}
+      Illustration, exactly as the Figma layers:
+        desktop → two frames: a full-width strip on top (1440×390)
+                  and a block in the bottom-right corner (890×402)
+        mobile  → one frame (686×264) under the text
+    {%- endcomment -%}
     <div class="ecom-banner__media" aria-hidden="true">
-      {%- if section.settings.image_desktop != blank -%}
+      {%- if section.settings.image_top != blank -%}
         {{
-          section.settings.image_desktop
+          section.settings.image_top
           | image_url: width: 2880
           | image_tag:
-            class: 'ecom-banner__bg ecom-banner__bg--desktop',
+            class: 'ecom-banner__bg ecom-banner__bg--top',
             loading: 'eager',
             fetchpriority: 'high',
             sizes: '100vw',
             widths: '1440, 1920, 2880',
+            alt: ''
+        }}
+      {%- endif -%}
+      {%- if section.settings.image_bottom != blank -%}
+        {{
+          section.settings.image_bottom
+          | image_url: width: 1780
+          | image_tag:
+            class: 'ecom-banner__bg ecom-banner__bg--bottom',
+            loading: 'eager',
+            sizes: '62vw',
+            widths: '890, 1335, 1780',
             alt: ''
         }}
       {%- endif -%}
@@ -193,14 +211,20 @@
     },
     {
       "type": "image_picker",
-      "id": "image_desktop",
-      "label": "Background illustration (desktop)",
-      "info": "1440 × 780px"
+      "id": "image_top",
+      "label": "Illustration – top strip (desktop)",
+      "info": "1440 × 390px. Figma layer: Frame at the top of the hero."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_bottom",
+      "label": "Illustration – bottom right (desktop)",
+      "info": "890 × 402px. Figma layer: Frame in the bottom-right corner."
     },
     {
       "type": "image_picker",
       "id": "image_mobile",
-      "label": "Background illustration (mobile)",
+      "label": "Illustration (mobile)",
       "info": "686 × 264px"
     },
     {
