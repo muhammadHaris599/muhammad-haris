@@ -21,6 +21,19 @@
   /** Option names shown as a colour button row. Anything else becomes a dropdown. */
   const COLOR_OPTION_NAMES = ['color', 'colour'];
 
+  /**
+   * Swatch colours from the Figma design, used when a value has no Shopify
+   * swatch colour set (Products → Options → Color → swatch).
+   */
+  const FIGMA_SWATCHES = {
+    red: '#b20f36',
+    grey: '#afafb7',
+    gray: '#afafb7',
+    blue: '#0d499f',
+    black: '#000000',
+    white: '#ffffff',
+  };
+
   /** Section id of Dawn's cart count bubble, refreshed after adding to cart. */
   const CART_BUBBLE_SECTION = 'cart-icon-bubble';
 
@@ -48,6 +61,11 @@
     return String(value).replace(/[&<>"']/g, (char) => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
     })[char]);
+  }
+
+  /** True for option names that should render as a colour button row. */
+  function isColorOption(name) {
+    return COLOR_OPTION_NAMES.includes(name.toLowerCase());
   }
 
   /** Turns product description HTML into plain text (DOMParser never runs scripts). */
@@ -108,12 +126,14 @@
 
       this.onClick = this.onClick.bind(this);
       this.onKeydown = this.onKeydown.bind(this);
+      this.onDocumentClick = this.onDocumentClick.bind(this);
       this.addEventListener('click', this.onClick);
     }
 
     disconnectedCallback() {
       this.removeEventListener('click', this.onClick);
       document.removeEventListener('keydown', this.onKeydown);
+      document.removeEventListener('click', this.onDocumentClick);
       document.documentElement.classList.remove('ecom-popup-open');
     }
 
@@ -140,6 +160,16 @@
 
       // Any other click inside the popup closes an open dropdown.
       this.closeDropdowns();
+    }
+
+    /**
+     * While the popup is open, a click anywhere outside the dialog closes it
+     * (overlay, header, other tiles…). The hotspot that opened it is ignored.
+     */
+    onDocumentClick(event) {
+      if (this.dialog.contains(event.target)) return;
+      if (event.target.closest('[data-open-popup]')) return;
+      this.close();
     }
 
     onKeydown(event) {
@@ -191,6 +221,7 @@
       this.popup.hidden = false;
       document.documentElement.classList.add('ecom-popup-open');
       document.addEventListener('keydown', this.onKeydown);
+      document.addEventListener('click', this.onDocumentClick);
       this.dialog.focus();
     }
 
@@ -199,6 +230,7 @@
       this.popup.hidden = true;
       document.documentElement.classList.remove('ecom-popup-open');
       document.removeEventListener('keydown', this.onKeydown);
+      document.removeEventListener('click', this.onDocumentClick);
       if (this.opener) this.opener.focus();
     }
 
@@ -226,13 +258,18 @@
     renderOptions() {
       const sectionId = this.dataset.sectionId;
 
-      this.els.options.innerHTML = this.product.options.map((name, index) => {
+      // Design order: colour picker first, then the other options.
+      // Indexes are kept so every picker still maps to the right variant option.
+      const ordered = this.product.options
+        .map((name, index) => ({ name, index, isColor: isColorOption(name) }))
+        .sort((a, b) => Number(b.isColor) - Number(a.isColor));
+
+      this.els.options.innerHTML = ordered.map(({ name, index, isColor }) => {
         const values = this.getOptionValues(index);
         // Products without variants have a single hidden "Default Title" option.
         if (values.length === 1 && values[0] === 'Default Title') return '';
 
         const labelId = `EcomOption-${sectionId}-${index}`;
-        const isColor = COLOR_OPTION_NAMES.includes(name.toLowerCase());
         const picker = isColor
           ? this.colorTemplate(index, values, labelId)
           : this.dropdownTemplate(index, name, values, labelId);
@@ -259,7 +296,7 @@
           aria-checked="false"
           data-option-index="${index}"
           data-option-value="${escapeHtml(value)}"
-          style="--swatch: ${escapeHtml(value.toLowerCase().replace(/\s+/g, ''))}"
+          style="--swatch: ${escapeHtml(this.getSwatchColor(value))}"
         >${escapeHtml(value)}</button>`).join('');
 
       return `<div class="ecom-swatches" role="radiogroup" aria-labelledby="${labelId}">${buttons}</div>`;
@@ -346,6 +383,17 @@
         `[data-dropdown-index="${index}"] [data-dropdown-value]`
       );
       if (dropdownValue) dropdownValue.textContent = value;
+    }
+
+    /**
+     * Swatch colour for an option value, in order of preference:
+     * Shopify swatch set on the product → Figma palette → the value as a CSS colour name.
+     */
+    getSwatchColor(value) {
+      const key = value.toLowerCase();
+      return (this.product.swatches || {})[value]
+        || FIGMA_SWATCHES[key]
+        || key.replace(/\s+/g, '');
     }
 
     /** Unique values of one option, in the order Shopify lists the variants. */
