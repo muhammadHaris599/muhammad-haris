@@ -14,6 +14,7 @@
       "settings": {
         "show_top_bar": true,
         "hide_theme_header": false,
+        "logo": "shopify://shop_images/Group_1000007777.png",
         "top_text": "Find the ideal gift for your loved ones.",
         "top_button_label": "Choose gift",
         "top_button_link": "#",
