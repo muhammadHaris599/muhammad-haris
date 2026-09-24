@@ -1,8 +1,30 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "banner": {
       "type": "ecom-banner",
-      "settings": {}
+      "settings": {
+        "show_top_bar": true,
+        "hide_theme_header": false,
+        "top_text": "Find the ideal gift for your loved ones.",
+        "top_button_label": "Choose gift",
+        "top_button_link": "",
+        "heading": "The Gift Guide",
+        "text": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.",
+        "text_mobile": "Discover Joy: Your Ultimate Holiday Gift Destination.",
+        "button_label": "Shop now",
+        "button_link": "",
+        "strip_text": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL",
+        "strip_text_mobile": "SUSTAINABLE, ETHICALLY MADE ACTIVEWEAR"
+      }
     },
     "grid": {
       "type": "ecom-product-grid",
@@ -10,6 +32,7 @@
         "product-1": {
           "type": "product",
           "settings": {
+            "product": "black-leather-bag",
             "hotspot_x": 59,
             "hotspot_y": 54
           }
@@ -17,6 +40,7 @@
         "product-2": {
           "type": "product",
           "settings": {
+            "product": "blue-silk-tuxedo",
             "hotspot_x": 82,
             "hotspot_y": 50
           }
@@ -24,6 +48,7 @@
         "product-3": {
           "type": "product",
           "settings": {
+            "product": "chequered-red-shirt",
             "hotspot_x": 60,
             "hotspot_y": 18
           }
@@ -31,6 +56,7 @@
         "product-4": {
           "type": "product",
           "settings": {
+            "product": "classic-leather-jacket",
             "hotspot_x": 70,
             "hotspot_y": 16
           }
@@ -38,6 +64,7 @@
         "product-5": {
           "type": "product",
           "settings": {
+            "product": "classic-varsity-top",
             "hotspot_x": 49,
             "hotspot_y": 23
           }
@@ -45,6 +72,7 @@
         "product-6": {
           "type": "product",
           "settings": {
+            "product": "dark-denim-top",
             "hotspot_x": 74,
             "hotspot_y": 37
           }
@@ -58,7 +86,11 @@
         "product-5",
         "product-6"
       ],
-      "settings": {}
+      "settings": {
+        "heading": "Tisso vison in the wild",
+        "bonus_product": "",
+        "trigger_values": "Black, Medium"
+      }
     }
   },
   "order": [
