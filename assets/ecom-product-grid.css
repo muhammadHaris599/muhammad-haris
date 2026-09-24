@@ -93,8 +93,11 @@
 /* --------------------------------------------------------------------------
    Popup
    -------------------------------------------------------------------------- */
+/* Scroll lock while the popup is open; padding replaces the hidden scrollbar
+   so the page behind does not shift sideways (width set in JS). */
 html.ecom-popup-open {
   overflow: hidden;
+  padding-right: var(--ecom-scrollbar-width, 0px);
 }
 
 .ecom-popup {

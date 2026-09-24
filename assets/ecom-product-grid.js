@@ -134,7 +134,7 @@
       this.removeEventListener('click', this.onClick);
       document.removeEventListener('keydown', this.onKeydown);
       document.removeEventListener('click', this.onDocumentClick);
-      document.documentElement.classList.remove('ecom-popup-open');
+      this.unlockScroll();
     }
 
     /* ---------------------------- Events -------------------------------- */
@@ -218,20 +218,38 @@
       this.update();
 
       this.opener = hotspot;
+      this.lockScroll();
       this.popup.hidden = false;
-      document.documentElement.classList.add('ecom-popup-open');
       document.addEventListener('keydown', this.onKeydown);
       document.addEventListener('click', this.onDocumentClick);
-      this.dialog.focus();
+      this.dialog.focus({ preventScroll: true });
     }
 
     close() {
       if (this.popup.hidden) return;
       this.popup.hidden = true;
-      document.documentElement.classList.remove('ecom-popup-open');
+      this.unlockScroll();
       document.removeEventListener('keydown', this.onKeydown);
       document.removeEventListener('click', this.onDocumentClick);
-      if (this.opener) this.opener.focus();
+      if (this.opener) this.opener.focus({ preventScroll: true });
+    }
+
+    /**
+     * Stops the page scrolling behind the popup without a layout shift:
+     * hiding the scrollbar makes the page wider, so its width is added back
+     * as padding (--ecom-scrollbar-width, used in the CSS).
+     */
+    lockScroll() {
+      const root = document.documentElement;
+      const scrollbarWidth = window.innerWidth - root.clientWidth;
+      root.style.setProperty('--ecom-scrollbar-width', `${scrollbarWidth}px`);
+      root.classList.add('ecom-popup-open');
+    }
+
+    unlockScroll() {
+      const root = document.documentElement;
+      root.classList.remove('ecom-popup-open');
+      root.style.removeProperty('--ecom-scrollbar-width');
     }
 
     /* --------------------------- Rendering ------------------------------ */
