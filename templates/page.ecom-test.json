@@ -17,11 +17,12 @@
         "top_text": "Find the ideal gift for your loved ones.",
         "top_button_label": "Choose gift",
         "top_button_link": "",
+        "image_mobile": "shopify://shop_images/Frame.png",
         "heading": "The Gift Guide",
         "text": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.",
         "text_mobile": "Discover Joy: Your Ultimate Holiday Gift Destination.",
         "button_label": "Shop now",
-        "button_link": "",
+        "button_link": "#",
         "strip_text": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL",
         "strip_text_mobile": "SUSTAINABLE, ETHICALLY MADE ACTIVEWEAR"
       }
